@@ -22,7 +22,9 @@ class dataHandler:
 	Class that handles object proposal and data transfer operations
 	"""
 
+
 	def generate_proposals(self,video_path,image_path,model,num_proposals, db):
+		
 		im = cv.imread(os.path.join(video_path,image_path))
 		print("Generating proposals for ", os.path.join(video_path,image_path))
 		#Piotr and Dollar(2014) Edge box implementation using OpenCV
@@ -51,33 +53,36 @@ class dataHandler:
 		#Display proposals
 		cv.imshow("edges", edges)
 		cv.imshow("edgeboxes", im)
-		cv.waitKey(5000)
+		cv.waitKey(1000)
 		cv.destroyAllWindows() 
+		
 
 
 
 
 if __name__ == '__main__':
-    print(__doc__)
+	    print(__doc__)
 
-    #loading parameters from config file
-    with open('data_config.json') as config_file:
-       config_data = json.load(config_file)
-    data_path = os.path.abspath(config_data['data_path'])
-    model = config_data['model']
-    num_proposals = int(config_data['num_proposals'])   
-   
-    #creating an object to handle proposal operations and data transfer
-    data_object = dataHandler()
+	    #loading parameters from config file
+	    with open('data_config.json') as config_file:
+	       config_data = json.load(config_file)
+	    data_path = os.path.abspath(config_data['data_path'])
+	    model = config_data['model']
+	    num_proposals = int(config_data['num_proposals'])   
+	   
+	    #creating an object to handle proposal operations and data transfer
+	    data_object = dataHandler()
 
-    # Setting up mongodb connection 
-    client = MongoClient("mongodb://localhost:27017/") 
-    mydatabase = client['InstanceRetrieval']
+	    # Setting up mongodb connection 
+	    client = MongoClient("mongodb://localhost:27017/") 
+	    mydatabase = client['InstanceRetrieval']
+	    
 
-    for video_path in os.listdir(data_path):
-      for image_path in os.listdir(os.path.join(data_path,video_path)):
-         if(image_path.endswith(('jpg','png')) ) :  
-            data_object.generate_proposals(os.path.join(data_path,video_path),image_path,model,num_proposals,mydatabase)
+	    for video_path in os.listdir(data_path):
+	      for image_path in os.listdir(os.path.join(data_path,video_path)):
+	         if(image_path.endswith(('jpg','png')) ) :  
+	         	
+	         	data_object.generate_proposals(os.path.join(data_path,video_path),image_path,model,num_proposals,mydatabase)
 
 
 
