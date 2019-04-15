@@ -13,6 +13,7 @@ import sys
 import os
 from pymongo import MongoClient
 import json
+import matplotlib.pyplot as plt
 
 
 
@@ -36,6 +37,7 @@ class dataHandler:
 		edge_boxes = cv.ximgproc.createEdgeBoxes()
 		edge_boxes.setMaxBoxes(num_proposals)
 		boxes = edge_boxes.getBoundingBoxes(edges, orimap)
+		print("Retrieved boxes",boxes,"For Frame",image_path)
 		
 		box_count= 0
 		box_dict={}
@@ -51,11 +53,12 @@ class dataHandler:
 		db.Frame.insert_one({'Video':video_path,'Frame':image_path , "Bounding_Boxes":box_dict})
 
 		#Display proposals
-		cv.imshow("edges", edges)
-		cv.imshow("edgeboxes", im)
-		cv.waitKey(1000)
-		cv.destroyAllWindows() 
-		
+		#cv.imshow("edges", edges)
+		#cv.imshow("edgeboxes", im)
+		#cv.waitKey(1000)
+		#cv.destroyAllWindows() 
+		plt.imshow(im)
+		plt.show()
 
 
 

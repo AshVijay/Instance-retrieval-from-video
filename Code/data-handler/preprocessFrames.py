@@ -2,11 +2,14 @@
 # -*- coding: utf-8 -*-
 
 
+import time
 import torch
+import torch.nn as nn
+from torch.autograd import Variable
 from torchvision import transforms
 from torch.utils.data.dataset import Dataset
 from torch.utils.data import DataLoader
-import torchvision.models.inception as inception
+from torchvision.models.inception import inception_v3
 from pymongo import MongoClient
 import json
 import numpy as np
@@ -26,10 +29,30 @@ def getFeatures():
     dataSet = MyDataset() 
 
     #Define the model
-    #base_model = inception(pretrained=True)
-    #dataset_loader = torch.utils.data.DataLoader(dataSet, batch_size = 1 , shuffle = True, num_workers = 4)
-    #output = base_model[:3](input)
-    #print(output)
+    base_model = inception_v3(pretrained=True)
+    #print(base_model)
+    base_model = nn.Sequential(*list(base_model.children())[:-4])  #Extract features from final max pool layer
+    #print(base_model)
+    
+    dataset_loader = torch.utils.data.DataLoader(dataSet, batch_size = 1 , shuffle = True, num_workers = 4)
+    train_iter = iter(dataset_loader)
+    while(1):
+      try:	
+        images, labels = train_iter.next()
+        images= Variable(images)
+        #print(images.shape)
+      except :
+      	print("Reached end of data set")
+      	break
+
+      #Transform the image
+      n,w,h,c=images.shape
+      images.resize_(n,c,h,w)
+      print(images.shape)
+      print(labels)
+
+      output = base_model(images)
+      print(output.shape)
 
     
 def Rescale(image, width, height):
@@ -40,10 +63,20 @@ def Rescale(image, width, height):
 def Crop(image,x,y,w,h) :
     """Crop the bounding box
     """
-    return image[x:x+w,y:y+h]
+    return image[y:y+h,x:x+w]
     
     
+def KMeans():
+	"""
+	Function to reduce spatial dimensions of features
+	"""
+	return True
 
+def PCA():
+	"""
+	Function to reduce individual dimension of feature vectors extracted from NN
+	"""
+	return True
 
 
 class MyDataset(Dataset):
@@ -90,10 +123,14 @@ class MyDataset(Dataset):
             print("Read Image")
             temp_image = Crop(temp_image,x,y,w,h)
             images[n] = Rescale(temp_image,128,128)
-            plt.imshow(images[n])
-            plt.show()
+            
+            #Display figures 
+            #plt.imshow(images[n])
+            #plt.show(block=False)
+            #plt.pause(1)
+            #plt.close('all')
 
-            labels += [str(img_path.split("/")[-1:-3:-1][1]) + str(img_path.split("/")[-1:-3:-1][0]) ]
+            labels += [os.path.join(str(img_path.split("/")[-1:-3:-1][1]) , str(img_path.split("/")[-1:-3:-1][0]) )]
             n+=1
 
         self.images = torch.from_numpy(images).float()
@@ -107,10 +144,7 @@ class MyDataset(Dataset):
         """
         image = self.images[index]
         frame = self.labels[index]
-        
-        if self.transform:
-            image = self.transform(image)
-            
+
         return image, frame
     
     def __len__(self):
