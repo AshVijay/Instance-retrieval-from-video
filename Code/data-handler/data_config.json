@@ -1,8 +1,0 @@
-{
-
-  "data_path": "/home/ashwin/Desktop/Semester 3/Object Retrieval from Video/Implementation/Datasets/CNN2h Dataset/temp_data"  ,
-  "model" : "../model/forest.yml"   ,
-  "num_proposals" : "10" , 
-  "num_centroids" : "2"  ,
-  "num_videos" : "1"
-}

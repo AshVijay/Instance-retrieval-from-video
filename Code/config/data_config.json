@@ -1,0 +1,27 @@
+{
+  
+  "data_path": "../../Datasets/CNN2h Dataset/Video_Dataset/"  ,
+  "query_path": "../../Datasets/CNN2h Dataset/Query_Dataset/", 
+  "model_path": "../training/history/" ,
+  "rf_model" : "../model/forest.yml"   ,
+  "num_proposals" : "100" ,
+  
+  
+  "search_k" : "2" ,
+  "pca_components" : "100" ,
+  "num_clusters" : "30" ,
+
+
+
+    "EPOCHS" : 100 ,
+    "BATCH_SIZE" : 100 ,
+    "LEARNING_RATE" : 1e-3 ,
+    "WEIGHT_DECAY" : 1e-5 , 
+    "LOG_INTERVAL" : 10 , 
+    "SPARSE_REG" : 1e-3 , 
+    "TRAIN_SCRATCH" : "True",
+    "SEARCH_PHASE" : "False",
+    "BEST_VAL" : "inf"   
+  
+  
+}

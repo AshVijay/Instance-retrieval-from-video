@@ -48,7 +48,7 @@ class dataHandler:
 			cv.rectangle(im, (x, y), (x+w, y+h), (0, 255, 0), 1, cv.LINE_AA)
 			box_dict['Box'+str(box_count)] = [int(x),int(y),int(w),int(h)]
 
-		print(box_dict)
+		#print(box_dict)
 		#push to database
 		db.Frame.insert_one({'Video':video_path,'Frame':image_path , "Bounding_Boxes":box_dict})
 
@@ -57,8 +57,9 @@ class dataHandler:
 		#cv.imshow("edgeboxes", im)
 		#cv.waitKey(1000)
 		#cv.destroyAllWindows() 
-		plt.imshow(im)
-		plt.show()
+		
+		#plt.imshow(im)
+		#plt.show()
 
 
 
@@ -67,10 +68,11 @@ if __name__ == '__main__':
 	    print(__doc__)
 
 	    #loading parameters from config file
-	    with open('data_config.json') as config_file:
+	    with open('../config/data_config.json') as config_file:
 	       config_data = json.load(config_file)
+	   
 	    data_path = os.path.abspath(config_data['data_path'])
-	    model = config_data['model']
+	    model = config_data['rf_model']
 	    num_proposals = int(config_data['num_proposals'])   
 	   
 	    #creating an object to handle proposal operations and data transfer
