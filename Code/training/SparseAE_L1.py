@@ -126,7 +126,7 @@ def model_training(autoencoder, train_dataset, epoch, video, BATCH_SIZE):
     train_iter = iter(train_loader)
     i=0
     while(1):  #While loop to iterate over frames of the current video
-      #try:
+  
         i+=1
         optimizer.zero_grad()
         try:
@@ -342,15 +342,7 @@ if __name__ == '__main__':
 
         else:
             print("Entering Validation phase")
-           # autoencoder.load_state_dict(torch.load('./history/'+video+'sparse_autoencoder_l1.pt'))
-           # evaluation(autoencoder, test_dataset, video, BATCH_SIZE)
 
-           # autoencoder.cpu()
-           # test_loader = torch.utils.data.DataLoader(test_dataset, batch_size = 1, shuffle = False, num_workers = 4)
-           # dataiter = iter(test_loader)
-           # images, _ = next(dataiter)
-           # images = Variable(images)
-           # outputs = autoencoder(images.view(images.size(0), -1))
     else :
       #Search phase
       print("Entered Search Phase")
