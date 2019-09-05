@@ -1,4 +1,5 @@
-An implementation [1] to retrieve instances of interest from various video sources using Pytorch and OpenCV. Built a scalable backend using mongodb and support for multi-GPU training.
+An implementation [1] to retrieve instances of interest from various video sources using Pytorch and OpenCV. 
+Built a scalable pipeline to support large video sources and number of proposals. Used mongodb as backend and deployed on GCP cloud instance.
 
 
 Reference:
